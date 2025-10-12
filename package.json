@@ -2,6 +2,7 @@
     "name": "station_gaming",
     "version": "0.1.0",
     "private": true,
+    "homepage": "https://abjshawty.github.io/station_gaming",
     "dependencies": {
         "@radix-ui/react-accordion": "^1.2.3",
         "@radix-ui/react-alert-dialog": "^1.1.6",
