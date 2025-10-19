@@ -19,7 +19,7 @@ export function Header ({ onCartOpen, onSearch, searchQuery }: HeaderProps) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             {/* <Gamepad2 className="w-8 h-8 text-primary" /> */}
-            <img src="https://ik.imagekit.io/abjshawty/logo.svg?updatedAt=1760845285737" alt="logo" className="w-8 h-8" />
+            <img src="https://ik.imagekit.io/abjshawty/logo.svg?updatedAt=1760845285737" alt="logo" className="w-10 h-10" />
             <h1 className="text-2xl">Soul Gaming</h1>
           </div>
 

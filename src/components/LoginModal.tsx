@@ -71,11 +71,12 @@ export function LoginModal ({ open }: LoginModalProps) {
       >
         <DialogHeader>
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-            <ShieldCheck className="h-6 w-6 text-primary" />
+            {/* <ShieldCheck className="h-6 w-6 text-primary" /> */}
+            <img src="https://ik.imagekit.io/abjshawty/logo.svg?updatedAt=1760845285737" alt="logo" className="w-10 h-10 rounded-full" />
           </div>
-          <DialogTitle className="text-center text-2xl">Authentication Required</DialogTitle>
+          <DialogTitle className="text-center text-2xl">Code d'authentification</DialogTitle>
           <DialogDescription className="text-center">
-            Please enter your 6-digit access code to continue
+            Veuillez entrer votre code d'authentification de 6 chiffres pour continuer
           </DialogDescription>
         </DialogHeader>
 
@@ -106,15 +107,15 @@ export function LoginModal ({ open }: LoginModalProps) {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Verifying...
+                Vérification...
               </>
             ) : (
-              'Submit Code'
+              'Soumettre le code'
             )}
           </Button>
 
           <p className="text-xs text-muted-foreground text-center">
-            Enter the 6-digit code provided to access the application
+            Veuillez entrer le code d'authentification de 6 chiffres fourni pour accéder à l'application
           </p>
         </div>
       </DialogContent>

@@ -52,7 +52,7 @@ export function ProductScroll ({ category, products, id, onProductClick }: Produ
                     className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-primary hover:bg-secondary text-white px-6 py-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-2"
                   >
                     <ShoppingCart className="w-4 h-4" />
-                    Add to Cart
+                    Ajouter au panier
                   </button>
                 </div>
 

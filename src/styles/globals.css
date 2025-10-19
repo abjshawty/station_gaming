@@ -3,29 +3,29 @@
 /* THEME UPDATE v3 - Lighter Royal Blue Theme */
 :root {
   --font-size: 16px;
-  --background: #1a2332;
+  --background: #1a3a6b;
   --foreground: #ffffff;
-  --card: #243447;
+  --card: #244a7f;
   --card-foreground: #ffffff;
-  --popover: #2a3f5f;
+  --popover: #1a2f52;
   --popover-foreground: #ffffff;
-  --primary: #0072CE;
+  --primary: #3d6ba8;
   --primary-foreground: #ffffff;
-  --secondary: #005bb5;
+  --secondary: #2a5280;
   --secondary-foreground: #ffffff;
-  --muted: #2d4a6b;
-  --muted-foreground: #c5d9ed;
-  --accent: #2196f3;
+  --muted: #2f4a6f;
+  --muted-foreground: #a8c5e0;
+  --accent: #5585c2;
   --accent-foreground: #ffffff;
   --destructive: #f44336;
   --destructive-foreground: #ffffff;
-  --border: rgba(33, 150, 243, 0.25);
-  --input: rgba(33, 150, 243, 0.2);
-  --input-background: #2a3f5f;
-  --switch-background: #c5d9ed;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.08);
+  --input-background: #244a7f;
+  --switch-background: #a8c5e0;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #2196f3;
+  --ring: #5585c2;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -194,39 +194,39 @@ html {
   .text-primary-color {
     color: var(--primary);
   }
-  
+
   .text-secondary-color {
     color: var(--secondary);
   }
-  
+
   .bg-primary-color {
     background-color: var(--primary);
   }
-  
+
   .bg-secondary-color {
     background-color: var(--secondary);
   }
-  
+
   .border-primary-color {
     border-color: var(--primary);
   }
-  
+
   .hover\:bg-primary-color:hover {
     background-color: var(--primary);
   }
-  
+
   .hover\:bg-secondary-color:hover {
     background-color: var(--secondary);
   }
-  
+
   .hover\:border-primary-color:hover {
     border-color: var(--primary);
   }
-  
+
   .hover\:text-primary-color:hover {
     color: var(--primary);
   }
-  
+
   .fill-primary-color {
     fill: var(--primary);
   }

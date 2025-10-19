@@ -162,7 +162,7 @@ export function ProductDetailModal ({
             className="w-full bg-primary hover:bg-secondary py-6"
           >
             <ShoppingCart className="w-5 h-5 mr-2" />
-            Add to Cart - €{product.price}
+            Ajouter au panier - €{product.price}
           </Button>
         </div>
       </DialogContent>

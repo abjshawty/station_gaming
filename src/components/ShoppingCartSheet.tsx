@@ -194,7 +194,7 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
         ) : (
           <form onSubmit={handleCheckout} className="py-6 space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Nom complet</Label>
+              <Label htmlFor="name">Pseudo</Label>
               <Input
                 id="name"
                 required

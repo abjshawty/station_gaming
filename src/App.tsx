@@ -163,7 +163,7 @@ function AppContent () {
                       </p>
                       <button
                         onClick={handleClearFilters}
-                        className="text-[#0072CE] hover:underline"
+                        className="text-primary hover:underline"
                       >
                         Clear all filters
                       </button>
