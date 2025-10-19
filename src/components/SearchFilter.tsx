@@ -13,13 +13,13 @@ interface SearchFilterProps {
 
 const GENRES = ['RPG', 'Action', 'Racing', 'Puzzle', 'Fighting', 'Adventure', 'Arcade', 'Platformer', 'Shooter', 'Strategy'];
 const PRICE_RANGES = [
-  { label: 'Under $15', value: 'under-15' },
-  { label: '$15 - $30', value: '15-30' },
-  { label: '$30 - $50', value: '30-50' },
-  { label: 'Over $50', value: 'over-50' },
+  { label: 'Under €15', value: 'under-15' },
+  { label: '€15 - €30', value: '15-30' },
+  { label: '€30 - €50', value: '30-50' },
+  { label: 'Over €50', value: 'over-50' },
 ];
 
-export function SearchFilter({
+export function SearchFilter ({
   activeFilters,
   onGenreToggle,
   onPriceRangeChange,
@@ -51,11 +51,10 @@ export function SearchFilter({
               <Badge
                 key={genre}
                 onClick={() => onGenreToggle(genre)}
-                className={`cursor-pointer transition-colors ${
-                  activeFilters.genres.includes(genre)
+                className={`cursor-pointer transition-colors ${activeFilters.genres.includes(genre)
                     ? 'bg-primary hover:bg-secondary'
                     : 'bg-muted hover:bg-muted/80 text-foreground'
-                }`}
+                  }`}
               >
                 {genre}
               </Badge>
@@ -75,11 +74,10 @@ export function SearchFilter({
                     activeFilters.priceRange === range.value ? null : range.value
                   )
                 }
-                className={`cursor-pointer transition-colors ${
-                  activeFilters.priceRange === range.value
+                className={`cursor-pointer transition-colors ${activeFilters.priceRange === range.value
                     ? 'bg-primary hover:bg-secondary'
                     : 'bg-muted hover:bg-muted/80 text-foreground'
-                }`}
+                  }`}
               >
                 {range.label}
               </Badge>
