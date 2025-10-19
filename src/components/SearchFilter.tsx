@@ -35,7 +35,7 @@ export function SearchFilter({
           {hasActiveFilters && (
             <button
               onClick={onClearFilters}
-              className="text-sm text-[#0072CE] hover:underline flex items-center gap-1"
+              className="text-sm text-primary hover:underline flex items-center gap-1"
             >
               <X className="w-4 h-4" />
               Clear All
@@ -53,7 +53,7 @@ export function SearchFilter({
                 onClick={() => onGenreToggle(genre)}
                 className={`cursor-pointer transition-colors ${
                   activeFilters.genres.includes(genre)
-                    ? 'bg-[#0072CE] hover:bg-[#005BA8]'
+                    ? 'bg-primary hover:bg-secondary'
                     : 'bg-muted hover:bg-muted/80 text-foreground'
                 }`}
               >
@@ -77,7 +77,7 @@ export function SearchFilter({
                 }
                 className={`cursor-pointer transition-colors ${
                   activeFilters.priceRange === range.value
-                    ? 'bg-[#0072CE] hover:bg-[#005BA8]'
+                    ? 'bg-primary hover:bg-secondary'
                     : 'bg-muted hover:bg-muted/80 text-foreground'
                 }`}
               >

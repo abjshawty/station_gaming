@@ -7,8 +7,8 @@ import { Minus, Plus, Trash2, CreditCard, Smartphone, Wallet } from 'lucide-reac
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { toast } from 'sonner@2.0.3';
-
+import { toast } from 'sonner';
+import { authenticatedFetch } from '../utils/api';
 type PaymentMethod = 'card' | 'wave' | 'orange';
 
 interface ShoppingCartSheetProps {
@@ -16,7 +16,7 @@ interface ShoppingCartSheetProps {
   onClose: () => void;
 }
 
-export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
+export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
   const { cart, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart();
   const [isCheckout, setIsCheckout] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
@@ -29,37 +29,85 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
     phoneNumber: '',
   });
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-    const methodNames = {
-      card: 'Card',
-      wave: 'Wave',
-      orange: 'Orange Money'
-    };
-    toast.success(`Order placed successfully via ${methodNames[paymentMethod]}! 🎮`);
-    clearCart();
-    setIsCheckout(false);
-    setPaymentMethod('card');
-    onClose();
-    setFormData({
-      name: '',
-      email: '',
-      cardNumber: '',
-      expiry: '',
-      cvv: '',
-      phoneNumber: '',
-    });
+    
+    try {
+      const data = {
+        name: formData.name,
+        email: formData.email,
+        cardNumber: formData.cardNumber,
+        expiry: formData.expiry,
+        cvv: formData.cvv,
+        phoneNumber: formData.phoneNumber,
+        paymentMethod,
+        cart,
+      };
+      console.log('🛒 [Order Debug] Submitting order:', data);
+      
+      // Make authenticated POST request
+      const response = await authenticatedFetch('http://localhost:3001/v0/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      
+      console.log('📥 [Order Debug] Response status:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ [Order Debug] Order failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorText,
+        });
+        
+        if (response.status === 401) {
+          toast.error('Authentication failed. Please log in again.');
+        } else {
+          toast.error(`Order failed: ${response.status} ${response.statusText}`);
+        }
+        return;
+      }
+      
+      const result = await response.json();
+      console.log('✅ [Order Debug] Order successful:', result);
+      
+      const methodNames = {
+        card: 'Card',
+        wave: 'Wave',
+        orange: 'Orange Money'
+      };
+      toast.success(`Commande passée avec succès via ${methodNames[paymentMethod]}! 🎮`);
+      clearCart();
+      setIsCheckout(false);
+      setPaymentMethod('card');
+      onClose();
+      setFormData({
+        name: '',
+        email: '',
+        cardNumber: '',
+        expiry: '',
+        cvv: '',
+        phoneNumber: '',
+      });
+    } catch (error) {
+      console.error('💥 [Order Debug] Exception during order submission:', error);
+      toast.error('Failed to submit order. Please try again.');
+    }
   };
 
   return (
     <Sheet open={open} onOpenChange={onClose}>
       <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>{isCheckout ? 'Checkout' : 'Shopping Cart'}</SheetTitle>
+          <SheetTitle>{isCheckout ? 'Caisse' : 'Panier'}</SheetTitle>
           <SheetDescription>
-            {isCheckout 
-              ? 'Complete your purchase by entering your payment information.' 
-              : 'Review your items and proceed to checkout.'}
+            {isCheckout
+              ? 'Prière d\'entrer vos informations de paiement'
+              : 'Veuillez vérifier vos articles et passer à la caisse.'}
           </SheetDescription>
         </SheetHeader>
 
@@ -68,7 +116,7 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
             <div className="flex-1 py-6">
               {cart.length === 0 ? (
                 <div className="text-center py-12 text-muted-foreground">
-                  Your cart is empty
+                  Votre panier est vide
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -114,7 +162,7 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
-                        <div className="mt-2" style={{ color: '#0072CE' }}>
+                        <div className="mt-2 text-primary">
                           ${(item.price * item.quantity).toFixed(2)}
                         </div>
                       </div>
@@ -128,16 +176,16 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
               <SheetFooter className="flex-col gap-4">
                 <div className="flex justify-between items-center py-4 border-t border-border">
                   <span>Total</span>
-                  <span className="text-2xl" style={{ color: '#0072CE' }}>
+                  <span className="text-2xl text-primary">
                     ${getCartTotal().toFixed(2)}
                   </span>
                 </div>
                 <Button
                   onClick={() => setIsCheckout(true)}
-                  className="w-full bg-[#0072CE] hover:bg-[#005BA8]"
+                  className="w-full bg-primary hover:bg-secondary"
                 >
                   <CreditCard className="w-4 h-4 mr-2" />
-                  Proceed to Checkout
+                  Passer à la caisse
                 </Button>
               </SheetFooter>
             )}
@@ -145,7 +193,7 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
         ) : (
           <form onSubmit={handleCheckout} className="py-6 space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
+              <Label htmlFor="name">Nom complet</Label>
               <Input
                 id="name"
                 required
@@ -173,23 +221,23 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
 
             {/* Payment Method Selection */}
             <div className="space-y-3 pt-2">
-              <Label>Payment Method</Label>
+              <Label>Méthode de paiement</Label>
               <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as PaymentMethod)}>
-                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-[#0072CE] transition-colors cursor-pointer">
+                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
                   <RadioGroupItem value="card" id="card" />
                   <Label htmlFor="card" className="flex items-center gap-2 cursor-pointer flex-1">
                     <CreditCard className="w-5 h-5" />
                     <span>Credit/Debit Card</span>
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-[#0072CE] transition-colors cursor-pointer">
+                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
                   <RadioGroupItem value="wave" id="wave" />
                   <Label htmlFor="wave" className="flex items-center gap-2 cursor-pointer flex-1">
                     <Smartphone className="w-5 h-5" />
                     <span>Wave</span>
                   </Label>
                 </div>
-                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-[#0072CE] transition-colors cursor-pointer">
+                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
                   <RadioGroupItem value="orange" id="orange" />
                   <Label htmlFor="orange" className="flex items-center gap-2 cursor-pointer flex-1">
                     <Wallet className="w-5 h-5" />
@@ -203,7 +251,7 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
             {paymentMethod === 'card' ? (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="cardNumber">Card Number</Label>
+                  <Label htmlFor="cardNumber">Numéro de carte</Label>
                   <Input
                     id="cardNumber"
                     required
@@ -218,7 +266,7 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="expiry">Expiry</Label>
+                    <Label htmlFor="expiry">Date d'expiration</Label>
                     <Input
                       id="expiry"
                       required
@@ -247,7 +295,7 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
               </>
             ) : (
               <div className="space-y-2">
-                <Label htmlFor="phoneNumber">Phone Number</Label>
+                <Label htmlFor="phoneNumber">Numéro de téléphone</Label>
                 <Input
                   id="phoneNumber"
                   required
@@ -264,7 +312,7 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
             <div className="py-4 border-t border-border">
               <div className="flex justify-between mb-4">
                 <span>Total</span>
-                <span className="text-2xl" style={{ color: '#0072CE' }}>
+                <span className="text-2xl text-primary">
                   ${getCartTotal().toFixed(2)}
                 </span>
               </div>
@@ -281,9 +329,9 @@ export function ShoppingCartSheet({ open, onClose }: ShoppingCartSheetProps) {
               </Button>
               <Button
                 type="submit"
-                className="flex-1 bg-[#0072CE] hover:bg-[#005BA8]"
+                className="flex-1 bg-primary hover:bg-secondary"
               >
-                Place Order
+                Confirmer la commande
               </Button>
             </div>
           </form>

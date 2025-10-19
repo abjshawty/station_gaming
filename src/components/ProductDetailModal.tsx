@@ -4,7 +4,7 @@ import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Product, useCart } from './CartContext';
 import { Star, ShoppingCart, Check } from 'lucide-react';
 import { Badge } from './ui/badge';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface ProductDetailModalProps {
   product: Product | null;
@@ -23,23 +23,23 @@ const getProductScreenshots = (productId: number) => {
 };
 
 const getProductDescription = (product: Product) => {
-  return product.description || 
+  return product.description ||
     `Experience the ultimate ${product.genre.toLowerCase()} adventure with ${product.title}. This critically acclaimed title offers hours of immersive gameplay, stunning visuals, and an unforgettable story that will keep you on the edge of your seat.`;
 };
 
-const getProductFeatures = (product: Product) => {
-  const features = [
-    'Single-player and multiplayer modes',
-    '4K Ultra HD graphics',
-    'Epic soundtrack by award-winning composers',
-    'Regular updates and DLC content',
-    'Cross-platform progression',
-    'Achievement system with 50+ unlockables',
-  ];
-  return features;
-};
+// const getProductFeatures = (product: Product) => {
+//   const features = [
+//     'Single-player and multiplayer modes',
+//     '4K Ultra HD graphics',
+//     'Epic soundtrack by award-winning composers',
+//     'Regular updates and DLC content',
+//     'Cross-platform progression',
+//     'Achievement system with 50+ unlockables',
+//   ];
+//   return features;
+// };
 
-export function ProductDetailModal({
+export function ProductDetailModal ({
   product,
   open,
   onClose,
@@ -50,7 +50,7 @@ export function ProductDetailModal({
 
   const screenshots = getProductScreenshots(product.id);
   const description = getProductDescription(product);
-  const features = getProductFeatures(product);
+  // const features = getProductFeatures(product);
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -71,18 +71,18 @@ export function ProductDetailModal({
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
-          
+
           {/* Title Overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-8">
-            <Badge className="mb-3 bg-[#0072CE]">{product.genre}</Badge>
+            <Badge className="mb-3 bg-primary">{product.genre}</Badge>
             <h2 className="text-4xl mb-2">{product.title}</h2>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1">
-                <Star className="w-5 h-5 fill-[#0072CE] text-[#0072CE]" />
+                <Star className="w-5 h-5 fill-primary text-primary" />
                 <span>{product.rating.toFixed(1)}</span>
               </div>
-              <span className="text-2xl" style={{ color: '#0072CE' }}>
-                ${product.price}
+              <span className="text-2xl text-primary">
+                €{product.price}
               </span>
             </div>
           </div>
@@ -98,13 +98,13 @@ export function ProductDetailModal({
           </div>
 
           {/* Screenshots */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <h3 className="mb-4">Screenshots</h3>
             <div className="grid grid-cols-3 gap-4">
               {screenshots.map((screenshot, index) => (
                 <div
                   key={index}
-                  className="aspect-video rounded-lg overflow-hidden border border-border hover:border-[#0072CE] transition-colors cursor-pointer"
+                  className="aspect-video rounded-lg overflow-hidden border border-border hover:border-primary transition-colors cursor-pointer"
                 >
                   <ImageWithFallback
                     src={screenshot}
@@ -114,23 +114,23 @@ export function ProductDetailModal({
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Features */}
-          <div className="mb-8">
+          {/* <div className="mb-8">
             <h3 className="mb-4">Features</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {features.map((feature, index) => (
                 <div key={index} className="flex items-start gap-2">
-                  <Check className="w-5 h-5 mt-0.5 flex-shrink-0" style={{ color: '#0072CE' }} />
+                  <Check className="w-5 h-5 mt-0.5 flex-shrink-0 text-primary" />
                   <span className="text-muted-foreground">{feature}</span>
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* System Requirements */}
-          <div className="mb-8 p-6 bg-muted rounded-lg">
+          {/* <div className="mb-8 p-6 bg-muted rounded-lg">
             <h3 className="mb-4">System Requirements</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -154,15 +154,15 @@ export function ProductDetailModal({
                 </ul>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Add to Cart Button */}
           <Button
             onClick={handleAddToCart}
-            className="w-full bg-[#0072CE] hover:bg-[#005BA8] py-6"
+            className="w-full bg-primary hover:bg-secondary py-6"
           >
             <ShoppingCart className="w-5 h-5 mr-2" />
-            Add to Cart - ${product.price}
+            Add to Cart - €{product.price}
           </Button>
         </div>
       </DialogContent>

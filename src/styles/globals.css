@@ -1,30 +1,31 @@
 @custom-variant dark (&:is(.dark *));
 
+/* THEME UPDATE v3 - Lighter Royal Blue Theme */
 :root {
   --font-size: 16px;
-  --background: #0a0a0f;
+  --background: #1a2332;
   --foreground: #ffffff;
-  --card: #1a1a24;
+  --card: #243447;
   --card-foreground: #ffffff;
-  --popover: #1a1a24;
+  --popover: #2a3f5f;
   --popover-foreground: #ffffff;
   --primary: #0072CE;
   --primary-foreground: #ffffff;
-  --secondary: #1a1a24;
+  --secondary: #005bb5;
   --secondary-foreground: #ffffff;
-  --muted: #2a2a38;
-  --muted-foreground: #a0a0b0;
-  --accent: #0072CE;
+  --muted: #2d4a6b;
+  --muted-foreground: #c5d9ed;
+  --accent: #2196f3;
   --accent-foreground: #ffffff;
-  --destructive: #d4183d;
+  --destructive: #f44336;
   --destructive-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.1);
-  --input-background: #1a1a24;
-  --switch-background: #cbced4;
+  --border: rgba(33, 150, 243, 0.25);
+  --input: rgba(33, 150, 243, 0.2);
+  --input-background: #2a3f5f;
+  --switch-background: #c5d9ed;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #0072CE;
+  --ring: #2196f3;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -186,4 +187,47 @@
 
 html {
   font-size: var(--font-size);
+}
+
+/* Utility classes for color consistency */
+@layer utilities {
+  .text-primary-color {
+    color: var(--primary);
+  }
+  
+  .text-secondary-color {
+    color: var(--secondary);
+  }
+  
+  .bg-primary-color {
+    background-color: var(--primary);
+  }
+  
+  .bg-secondary-color {
+    background-color: var(--secondary);
+  }
+  
+  .border-primary-color {
+    border-color: var(--primary);
+  }
+  
+  .hover\:bg-primary-color:hover {
+    background-color: var(--primary);
+  }
+  
+  .hover\:bg-secondary-color:hover {
+    background-color: var(--secondary);
+  }
+  
+  .hover\:border-primary-color:hover {
+    border-color: var(--primary);
+  }
+  
+  .hover\:text-primary-color:hover {
+    color: var(--primary);
+  }
+  
+  .fill-primary-color {
+    fill: var(--primary);
+  }
 }
