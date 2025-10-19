@@ -24,6 +24,10 @@ export function LoginModal ({ open }: LoginModalProps) {
     setIsLoading(true);
 
     try {
+      console.log('Authenticating with code:', code);
+      console.log('API Base URL:', API_BASE_URL);
+      console.log('Full URL:', `${API_BASE_URL}/code/login`);
+      alert(`${API_BASE_URL}/code/login`);
       const response = await fetch(`${API_BASE_URL}/code/login`, {
         method: 'POST',
         headers: {
