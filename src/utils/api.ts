@@ -4,7 +4,9 @@
 
 let authToken: string | null = null;
 
-export const API_BASE_URL = 'http://soul_backend.railway.internal/v0';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+  ? `${import.meta.env.VITE_API_BASE_URL}/v0`
+  : 'http://soul_backend.railway.internal/v0';
 // export const API_BASE_URL = 'http://localhost:3001/v0';
 export function setAuthToken (token: string | null) {
   authToken = token;
