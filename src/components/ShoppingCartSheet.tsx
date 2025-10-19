@@ -9,6 +9,7 @@ import { Label } from './ui/label';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { toast } from 'sonner';
 import { authenticatedFetch } from '../utils/api';
+import { API_BASE_URL } from '../utils/api';
 type PaymentMethod = 'card' | 'wave' | 'orange';
 
 interface ShoppingCartSheetProps {
@@ -31,7 +32,7 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const data = {
         name: formData.name,
@@ -44,18 +45,18 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
         cart,
       };
       console.log('🛒 [Order Debug] Submitting order:', data);
-      
+
       // Make authenticated POST request
-      const response = await authenticatedFetch('http://localhost:3001/v0/order', {
+      const response = await authenticatedFetch(`${API_BASE_URL}/order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
-      
+
       console.log('📥 [Order Debug] Response status:', response.status);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error('❌ [Order Debug] Order failed:', {
@@ -63,7 +64,7 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
           statusText: response.statusText,
           error: errorText,
         });
-        
+
         if (response.status === 401) {
           toast.error('Authentication failed. Please log in again.');
         } else {
@@ -71,10 +72,10 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
         }
         return;
       }
-      
+
       const result = await response.json();
       console.log('✅ [Order Debug] Order successful:', result);
-      
+
       const methodNames = {
         card: 'Card',
         wave: 'Wave',

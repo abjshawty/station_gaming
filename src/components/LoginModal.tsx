@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 import { Loader2, ShieldCheck } from 'lucide-react';
 import { useAuth } from './AuthContext';
 import { toast } from 'sonner';
-
+import { API_BASE_URL } from '../utils/api';
 interface LoginModalProps {
   open: boolean;
 }
@@ -24,7 +24,7 @@ export function LoginModal ({ open }: LoginModalProps) {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://127.0.0.1:3001/v0/code/login', {
+      const response = await fetch(`${API_BASE_URL}/code/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

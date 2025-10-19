@@ -11,7 +11,7 @@ import { SearchFilter } from './components/SearchFilter';
 import { LoginModal } from './components/LoginModal';
 import { Toaster } from './components/ui/sonner';
 import { authenticatedFetch } from './utils/api';
-
+import { API_BASE_URL } from './utils/api';
 function AppContent () {
   const { isAuthenticated } = useAuth();
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -31,7 +31,7 @@ function AppContent () {
   useEffect(() => {
     if (isAuthenticated) {
       setIsLoading(true);
-      authenticatedFetch('http://localhost:3001/v0/product')
+      authenticatedFetch(`${API_BASE_URL}/product`)
         .then(res => res.json())
         .then(data => {
           setProducts(data.data);
