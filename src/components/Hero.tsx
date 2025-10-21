@@ -1,18 +1,59 @@
+import { useState, useEffect } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Button } from './ui/button';
 
+const BACKGROUND_IMAGES = [
+  "https://ik.imagekit.io/abjshawty/soul/red_dead.jpeg?updatedAt=1761047707571",
+  "https://ik.imagekit.io/abjshawty/soul/bo3.jpeg?updatedAt=1761047706855",
+  "https://ik.imagekit.io/abjshawty/soul/battlefield_6.jpeg?updatedAt=1761047707422"
+];
+
 export function Hero () {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      
+      // Wait for fade out, then change image
+      setTimeout(() => {
+        setCurrentImageIndex((prevIndex) => 
+          (prevIndex + 1) % BACKGROUND_IMAGES.length
+        );
+        setIsTransitioning(false);
+      }, 500); // Half of transition duration for smooth crossfade
+    }, 6000); // Change image every 6 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
+      {/* Background Images with Fade Transition */}
       <div className="absolute inset-0 z-0">
-        <ImageWithFallback
-          src="https://images.unsplash.com/photo-1614179924047-e1ab49a0a0cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBzZXR1cHxlbnwxfHx8fDE3NjAyMzUyMjl8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
-          alt="Gaming Setup"
-          className="w-full h-full object-cover"
-        />
+        {BACKGROUND_IMAGES.map((image, index) => (
+          <div
+            key={image}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentImageIndex && !isTransitioning
+                ? 'opacity-100'
+                : 'opacity-0'
+            }`}
+          >
+            <ImageWithFallback
+              src={image}
+              alt={`Gaming Background ${index + 1}`}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ))}
+        
+        {/* Dark Overlay for Text Readability */}
+        <div className="absolute inset-0 bg-black/45"></div>
+        
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background"></div>
       </div>
 
       {/* Content */}
