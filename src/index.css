@@ -1031,8 +1031,8 @@
     border-left-width: 1px;
   }
 
-  .border-\[\#0072CE\] {
-    border-color: #0072ce;
+  .border-\[\#0052A3\] {
+    border-color: #0052a3;
   }
 
   .border-border {
@@ -1047,8 +1047,8 @@
     border-color: #0000;
   }
 
-  .bg-\[\#0072CE\] {
-    background-color: #0072ce;
+  .bg-\[\#0052A3\] {
+    background-color: #0052a3;
   }
 
   .bg-background {
@@ -1196,8 +1196,8 @@
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
 
-  .fill-\[\#0072CE\] {
-    fill: #0072ce;
+  .fill-\[\#0052A3\] {
+    fill: #0052a3;
   }
 
   .fill-primary {
@@ -1385,8 +1385,8 @@
     white-space: nowrap;
   }
 
-  .text-\[\#0072CE\] {
-    color: #0072ce;
+  .text-\[\#0052A3\] {
+    color: #0052a3;
   }
 
   .text-foreground {
@@ -1535,11 +1535,11 @@
     }
   }
 
-  .group-data-\[disabled\=true\]\:pointer-events-none:is(:where(.group)[data-disabled="true"] *) {
+  .group-data-[disabled=true]\:pointer-events-none:is(:where(.group)[data-disabled="true"] *) {
     pointer-events: none;
   }
 
-  .group-data-\[disabled\=true\]\:opacity-50:is(:where(.group)[data-disabled="true"] *) {
+  .group-data-[disabled=true]\:opacity-50:is(:where(.group)[data-disabled="true"] *) {
     opacity: .5;
   }
 
@@ -1613,20 +1613,20 @@
   }
 
   @media (hover: hover) {
-    .hover\:border-\[\#0072CE\]:hover {
-      border-color: #0072ce;
+    .hover\:border-\[\#0052A3\]:hover {
+      border-color: #0052a3;
     }
   }
 
   @media (hover: hover) {
-    .hover\:bg-\[\#005BA8\]:hover {
-      background-color: #005ba8;
+    .hover\:bg-\[\#003D7A\]:hover {
+      background-color: #003d7a;
     }
   }
 
   @media (hover: hover) {
-    .hover\:bg-\[\#0072CE\]:hover {
-      background-color: #0072ce;
+    .hover\:bg-\[\#0052A3\]:hover {
+      background-color: #0052a3;
     }
   }
 
@@ -1703,8 +1703,8 @@
   }
 
   @media (hover: hover) {
-    .hover\:text-\[\#0072CE\]:hover {
-      color: #0072ce;
+    .hover\:text-\[\#0052A3\]:hover {
+      color: #0052a3;
     }
   }
 
@@ -1732,8 +1732,8 @@
     }
   }
 
-  .focus\:border-\[\#0072CE\]:focus {
-    border-color: #0072ce;
+  .focus\:border-\[\#0052A3\]:focus {
+    border-color: #0052a3;
   }
 
   .focus\:ring-2:focus {
@@ -2129,30 +2129,30 @@
 
 :root {
   --font-size: 16px;
-  /* --background: #1a2332; */
-  --background: #1a3a6b;
+  /* Deeper blue color scheme based on #0052A3 */
+  --background: #001a3d;
   --foreground: #fff;
-  --card: #244a7f;
+  --card: #003366;
   --card-foreground: #fff;
-  --popover: #1a2f52;
+  --popover: #002952;
   --popover-foreground: #fff;
-  --primary: #3d6ba8;
+  --primary: #0052A3;
   --primary-foreground: #fff;
-  --secondary: #2a5280;
+  --secondary: #003d7a;
   --secondary-foreground: #fff;
-  --muted: #2f4a6f;
-  --muted-foreground: #a8c5e0;
-  --accent: #5585c2;
+  --muted: #002952;
+  --muted-foreground: #8fb3d9;
+  --accent: #0066cc;
   --accent-foreground: #fff;
   --destructive: #f44336;
   --destructive-foreground: #fff;
   --border: rgba(255, 255, 255, 0.12);
   --input: rgba(255, 255, 255, 0.08);
-  --input-background: #244a7f;
-  --switch-background: #a8c5e0;
+  --input-background: #003366;
+  --switch-background: #8fb3d9;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #5585c2;
+  --ring: #0066cc;
   --chart-1: oklch(.646 .222 41.116);
   --chart-2: oklch(.6 .118 184.704);
   --chart-3: oklch(.398 .07 227.392);
