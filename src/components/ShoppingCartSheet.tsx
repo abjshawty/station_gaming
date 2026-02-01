@@ -3,14 +3,12 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetDescrip
 import { Button } from './ui/button';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useCart } from './CartContext';
-import { Minus, Plus, Trash2, CreditCard, Smartphone, Wallet } from 'lucide-react';
+import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { toast } from 'sonner';
 import { authenticatedFetch } from '../utils/api';
 import { API_BASE_URL } from '../utils/api';
-type PaymentMethod = 'card' | 'wave' | 'orange';
 
 interface ShoppingCartSheetProps {
   open: boolean;
@@ -20,31 +18,27 @@ interface ShoppingCartSheetProps {
 export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
   const { cart, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart();
   const [isCheckout, setIsCheckout] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    cardNumber: '',
-    expiry: '',
-    cvv: '',
-    phoneNumber: '',
   });
 
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const data = {
-        name: formData.name,
-        email: formData.email,
-        cardNumber: formData.cardNumber,
-        expiry: formData.expiry,
-        cvv: formData.cvv,
-        phoneNumber: formData.phoneNumber,
-        paymentMethod,
-        cart,
+      const orderData = {
+        customerName: formData.name,
+        customerEmail: formData.email,
+        items: cart.map(item => ({
+          productId: item.id,
+          title: item.title,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        totalAmount: getCartTotal(),
       };
-      console.log('🛒 [Order Debug] Submitting order:', data);
+      console.log('🛒 [Order Debug] Submitting order:', orderData);
 
       // Make authenticated POST request
       const response = await authenticatedFetch(`${API_BASE_URL}/order`, {
@@ -52,7 +46,7 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(orderData),
       });
 
       console.log('📥 [Order Debug] Response status:', response.status);
@@ -76,23 +70,13 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
       const result = await response.json();
       console.log('✅ [Order Debug] Order successful:', result);
 
-      const methodNames = {
-        card: 'Card',
-        wave: 'Wave',
-        orange: 'Orange Money'
-      };
-      toast.success(`Commande passée avec succès via ${methodNames[paymentMethod]}! 🎮`);
+      toast.success('Commande passée avec succès! Vérifiez votre email pour la confirmation. 🎮');
       clearCart();
       setIsCheckout(false);
-      setPaymentMethod('card');
       onClose();
       setFormData({
         name: '',
         email: '',
-        cardNumber: '',
-        expiry: '',
-        cvv: '',
-        phoneNumber: '',
       });
     } catch (error) {
       console.error('💥 [Order Debug] Exception during order submission:', error);
@@ -107,7 +91,7 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
           <SheetTitle>{isCheckout ? 'Caisse' : 'Panier'}</SheetTitle>
           <SheetDescription>
             {isCheckout
-              ? 'Prière d\'entrer vos informations de paiement'
+              ? 'Entrez vos informations pour recevoir la confirmation de commande par email'
               : 'Veuillez vérifier vos articles et passer à la caisse.'}
           </SheetDescription>
         </SheetHeader>
@@ -185,7 +169,7 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
                   onClick={() => setIsCheckout(true)}
                   className="w-full bg-primary hover:bg-secondary"
                 >
-                  <CreditCard className="w-4 h-4 mr-2" />
+                  <ShoppingBag className="w-4 h-4 mr-2" />
                   Passer à la caisse
                 </Button>
               </SheetFooter>
@@ -220,95 +204,11 @@ export function ShoppingCartSheet ({ open, onClose }: ShoppingCartSheetProps) {
               />
             </div>
 
-            {/* Payment Method Selection */}
-            <div className="space-y-3 pt-2">
-              <Label>Méthode de paiement</Label>
-              <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as PaymentMethod)}>
-                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-                  <RadioGroupItem value="card" id="card" />
-                  <Label htmlFor="card" className="flex items-center gap-2 cursor-pointer flex-1">
-                    <CreditCard className="w-5 h-5" />
-                    <span>Credit/Debit Card</span>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-                  <RadioGroupItem value="wave" id="wave" />
-                  <Label htmlFor="wave" className="flex items-center gap-2 cursor-pointer flex-1">
-                    <Smartphone className="w-5 h-5" />
-                    <span>Wave</span>
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2 p-3 border border-border rounded-lg hover:border-primary transition-colors cursor-pointer">
-                  <RadioGroupItem value="orange" id="orange" />
-                  <Label htmlFor="orange" className="flex items-center gap-2 cursor-pointer flex-1">
-                    <Wallet className="w-5 h-5" />
-                    <span>Orange Money</span>
-                  </Label>
-                </div>
-              </RadioGroup>
+            <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm">
+              <p className="text-muted-foreground">
+                Une confirmation de commande sera envoyée à votre email avec les détails de votre achat.
+              </p>
             </div>
-
-            {/* Payment Details based on selected method */}
-            {paymentMethod === 'card' ? (
-              <>
-                <div className="space-y-2">
-                  <Label htmlFor="cardNumber">Numéro de carte</Label>
-                  <Input
-                    id="cardNumber"
-                    required
-                    value={formData.cardNumber}
-                    onChange={(e) =>
-                      setFormData({ ...formData, cardNumber: e.target.value })
-                    }
-                    placeholder="1234 5678 9012 3456"
-                    maxLength={19}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="expiry">Date d'expiration</Label>
-                    <Input
-                      id="expiry"
-                      required
-                      value={formData.expiry}
-                      onChange={(e) =>
-                        setFormData({ ...formData, expiry: e.target.value })
-                      }
-                      placeholder="MM/YY"
-                      maxLength={5}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="cvv">CVV</Label>
-                    <Input
-                      id="cvv"
-                      required
-                      value={formData.cvv}
-                      onChange={(e) =>
-                        setFormData({ ...formData, cvv: e.target.value })
-                      }
-                      placeholder="123"
-                      maxLength={3}
-                    />
-                  </div>
-                </div>
-              </>
-            ) : (
-              <div className="space-y-2">
-                <Label htmlFor="phoneNumber">Numéro de téléphone</Label>
-                <Input
-                  id="phoneNumber"
-                  required
-                  type="tel"
-                  value={formData.phoneNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phoneNumber: e.target.value })
-                  }
-                  placeholder="+221 XX XXX XX XX"
-                />
-              </div>
-            )}
 
             <div className="py-4 border-t border-border">
               <div className="flex justify-between mb-4">

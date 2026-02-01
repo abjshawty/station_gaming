@@ -33,8 +33,9 @@ export function LoginModal ({ open }: LoginModalProps) {
       });
 
       if (response.status === 200) {
-        const result = await response.json();
-        const authToken = result.data.token;
+        const result = (await response.json()) as {message: string, token: string}
+       
+        const authToken = result.token;
 
         // Store token in memory via context
         setToken(authToken);
