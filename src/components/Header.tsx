@@ -46,7 +46,8 @@ export function Header ({ onCartOpen, onSearch, searchQuery }: HeaderProps) {
           </div>
 
           <nav className="hidden lg:flex items-center gap-8">
-            <a href="#standard" className="hover:text-primary transition-colors">Standard</a>
+            {/* <a href="#standard" className="hover:text-primary transition-colors">Standard</a> */}
+            <a href="#standard" className="hover:text-primary transition-colors">Rio de Janeiro</a> {/* TODO: Checkout actual name for this category cause ain't no way that's the name */}
             <a href="#premium" className="hover:text-primary transition-colors">Premium</a>
             <a href="#deluxe" className="hover:text-primary transition-colors">Deluxe</a>
           </nav>

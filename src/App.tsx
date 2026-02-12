@@ -200,7 +200,7 @@ function AppContent () {
               ) : (
                 <>
                   <ProductScroll
-                    category="Standard"
+                    category="Rio De Janeiro"
                     products={standardGames}
                     id="standard"
                     onProductClick={setSelectedProduct}
