@@ -1,4 +1,4 @@
-import { ShoppingCart, Search, Gamepad2, X } from 'lucide-react';
+import { ShoppingCart, Search, Gamepad2, X, Settings } from 'lucide-react';
 import { useCart } from './CartContext';
 import { Input } from './ui/input';
 import { useState } from 'react';
@@ -7,9 +7,11 @@ interface HeaderProps {
   onCartOpen: () => void;
   onSearch: (query: string) => void;
   searchQuery: string;
+  isAdmin?: boolean;
+  onAdminClick?: () => void;
 }
 
-export function Header ({ onCartOpen, onSearch, searchQuery }: HeaderProps) {
+export function Header ({ onCartOpen, onSearch, searchQuery, isAdmin = false, onAdminClick }: HeaderProps) {
   const { getCartCount } = useCart();
   const [showSearch, setShowSearch] = useState(false);
 
@@ -46,13 +48,20 @@ export function Header ({ onCartOpen, onSearch, searchQuery }: HeaderProps) {
           </div>
 
           <nav className="hidden lg:flex items-center gap-8">
-            {/* <a href="#standard" className="hover:text-primary transition-colors">Standard</a> */}
-            <a href="#standard" className="hover:text-primary transition-colors">Rio de Janeiro</a> {/* TODO: Checkout actual name for this category cause ain't no way that's the name */}
-            <a href="#premium" className="hover:text-primary transition-colors">Premium</a>
-            <a href="#deluxe" className="hover:text-primary transition-colors">Deluxe</a>
+            <a href="#rio_de_janeiro" className="hover:text-primary transition-colors">Rio De Janeiro</a>
+            <a href="#euphoria" className="hover:text-primary transition-colors">Euphoria</a>
           </nav>
 
           <div className="flex items-center gap-4">
+            {isAdmin && onAdminClick && (
+              <button
+                onClick={onAdminClick}
+                className="p-2 hover:bg-muted rounded-lg transition-colors"
+                title="Admin Panel"
+              >
+                <Settings className="w-5 h-5" />
+              </button>
+            )}
             <button
               onClick={() => setShowSearch(!showSearch)}
               className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"

@@ -20,9 +20,8 @@ export function Footer () {
           <div>
             <h4 className="mb-4">Shop</h4>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#standard" className="hover:text-primary transition-colors">Standard Games</a></li>
-              <li><a href="#premium" className="hover:text-primary transition-colors">Premium Games</a></li>
-              <li><a href="#deluxe" className="hover:text-primary transition-colors">Deluxe Games</a></li>
+              <li><a href="#rio_de_janeiro" className="hover:text-primary transition-colors">Rio De Janeiro Games</a></li>
+              <li><a href="#euphoria" className="hover:text-primary transition-colors">Euphoria Games</a></li>
               <li><a href="#" className="hover:text-primary transition-colors">New Releases</a></li>
             </ul>
           </div>

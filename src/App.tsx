@@ -9,16 +9,18 @@ import { ShoppingCartSheet } from './components/ShoppingCartSheet';
 import { ProductDetailModal } from './components/ProductDetailModal';
 import { SearchFilter } from './components/SearchFilter';
 import { LoginModal } from './components/LoginModal';
+import { AdminPage } from './components/AdminPage';
 import { Toaster } from './components/ui/sonner';
 import { authenticatedFetch } from './utils/api';
 import { API_BASE_URL } from './utils/api';
 function AppContent () {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showAdmin, setShowAdmin] = useState(false);
   const [filters, setFilters] = useState<{
     genres: string[];
     priceRange: string | null;
@@ -44,10 +46,9 @@ function AppContent () {
     }
   }, [isAuthenticated]);
 
-  const standardGames = products.filter((product: Product) => product.category === "Standard");
-  const deluxeGames = products.filter((product: Product) => product.category === "Deluxe");
-  const premiumGames = products.filter((product: Product) => product.category === "Premium");
-  const allGames = [...standardGames, ...premiumGames, ...deluxeGames];
+  const rioDeJaneiroGames = products.filter((product: Product) => product.category === "Rio_De_Janeiro");
+  const euphoriaGames = products.filter((product: Product) => product.category === "Euphoria");
+  const allGames = [...rioDeJaneiroGames, ...euphoriaGames];
 
   // Filter products based on search and filters
   const filteredGames = useMemo(() => {
@@ -89,9 +90,8 @@ function AppContent () {
     return filtered;
   }, [searchQuery, filters, allGames]);
 
-  const filteredStandard = filteredGames.filter((g) => g.category === 'Standard');
-  const filteredPremium = filteredGames.filter((g) => g.category === 'Premium');
-  const filteredDeluxe = filteredGames.filter((g) => g.category === 'Deluxe');
+  const filteredRioDeJaneiro = filteredGames.filter((g) => g.category === 'Rio_De_Janeiro');
+  const filteredEuphoria = filteredGames.filter((g) => g.category === 'Euphoria');
 
   const handleGenreToggle = (genre: string) => {
     setFilters((prev) => ({
@@ -130,116 +130,110 @@ function AppContent () {
           onCartOpen={() => setIsCartOpen(true)}
           onSearch={setSearchQuery}
           searchQuery={searchQuery}
+          isAdmin={isAdmin}
+          onAdminClick={() => setShowAdmin(true)}
         />
-        <main>
-          <Hero />
-
-          {/* Search and Filter Section */}
-          <SearchFilter
-            activeFilters={filters}
-            onGenreToggle={handleGenreToggle}
-            onPriceRangeChange={handlePriceRangeChange}
-            onClearFilters={handleClearFilters}
-          />
-
-          {/* Loading State */}
-          {isLoading && isAuthenticated ? (
-            <div className="container mx-auto px-6 text-center py-20">
-              <div className="flex flex-col items-center gap-4">
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                <p className="text-muted-foreground">Loading products...</p>
-              </div>
-            </div>
+        <main className="min-h-[calc(100vh-80px)]">
+          {showAdmin ? (
+            <AdminPage onBack={() => setShowAdmin(false)} />
           ) : (
             <>
-              {/* Product Sections */}
-              {hasActiveFilters ? (
-                <div className="py-12">
-                  {filteredGames.length === 0 ? (
-                    <div className="container mx-auto px-6 text-center py-20">
-                      <h3 className="mb-2">No games found</h3>
-                      <p className="text-muted-foreground mb-6">
-                        Try adjusting your filters or search query
-                      </p>
-                      <button
-                        onClick={handleClearFilters}
-                        className="text-primary hover:underline"
-                      >
-                        Clear all filters
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      {filteredStandard.length > 0 && (
-                        <ProductScroll
-                          category="Standard"
-                          products={filteredStandard}
-                          id="standard"
-                          onProductClick={setSelectedProduct}
-                        />
-                      )}
-                      {filteredPremium.length > 0 && (
-                        <ProductScroll
-                          category="Premium"
-                          products={filteredPremium}
-                          id="premium"
-                          onProductClick={setSelectedProduct}
-                        />
-                      )}
-                      {filteredDeluxe.length > 0 && (
-                        <ProductScroll
-                          category="Deluxe"
-                          products={filteredDeluxe}
-                          id="deluxe"
-                          onProductClick={setSelectedProduct}
-                        />
-                      )}
-                    </>
-                  )}
+              <Hero />
+
+              {/* Search and Filter Section */}
+              <SearchFilter
+                activeFilters={filters}
+                onGenreToggle={handleGenreToggle}
+                onPriceRangeChange={handlePriceRangeChange}
+                onClearFilters={handleClearFilters}
+              />
+
+              {/* Loading State */}
+              {isLoading && isAuthenticated ? (
+                <div className="container mx-auto px-6 text-center py-20">
+                  <div className="flex flex-col items-center gap-4">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+                    <p className="text-muted-foreground">Loading products...</p>
+                  </div>
                 </div>
               ) : (
                 <>
-                  <ProductScroll
-                    category="Rio De Janeiro"
-                    products={standardGames}
-                    id="standard"
-                    onProductClick={setSelectedProduct}
-                  />
-                  <ProductScroll
-                    category="Premium"
-                    products={premiumGames}
-                    id="premium"
-                    onProductClick={setSelectedProduct}
-                  />
-                  <ProductScroll
-                    category="Deluxe"
-                    products={deluxeGames}
-                    id="deluxe"
-                    onProductClick={setSelectedProduct}
-                  />
+                  {/* Product Sections */}
+                  {hasActiveFilters ? (
+                    <div className="py-12">
+                      {filteredGames.length === 0 ? (
+                        <div className="container mx-auto px-6 text-center py-20">
+                          <h3 className="mb-2">No games found</h3>
+                          <p className="text-muted-foreground mb-6">
+                            Try adjusting your filters or search query
+                          </p>
+                          <button
+                            onClick={handleClearFilters}
+                            className="text-primary hover:underline"
+                          >
+                            Clear all filters
+                          </button>
+                        </div>
+                      ) : (
+                        <>
+                          {filteredRioDeJaneiro.length > 0 && (
+                            <ProductScroll
+                              category="Rio De Janeiro"
+                              products={filteredRioDeJaneiro}
+                              id="rio_de_janeiro"
+                              onProductClick={setSelectedProduct}
+                            />
+                          )}
+                          {filteredEuphoria.length > 0 && (
+                            <ProductScroll
+                              category="Euphoria"
+                              products={filteredEuphoria}
+                              id="euphoria"
+                              onProductClick={setSelectedProduct}
+                            />
+                          )}
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <>
+                      <ProductScroll
+                        category="Rio De Janeiro"
+                        products={rioDeJaneiroGames}
+                        id="rio_de_janeiro"
+                        onProductClick={setSelectedProduct}
+                      />
+                      <ProductScroll
+                        category="Euphoria"
+                        products={euphoriaGames}
+                        id="euphoria"
+                        onProductClick={setSelectedProduct}
+                      />
+                    </>
+                  )}
                 </>
               )}
             </>
           )}
         </main>
-        <Footer />
-
-        {/* Shopping Cart Sheet */}
-        <ShoppingCartSheet
-          open={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-        />
-
-        {/* Product Detail Modal */}
-        <ProductDetailModal
-          product={selectedProduct}
-          open={!!selectedProduct}
-          onClose={() => setSelectedProduct(null)}
-        />
-
-        {/* Toast Notifications */}
-        <Toaster position="bottom-right" />
       </div>
+      <Footer />
+
+      {/* Shopping Cart Sheet */}
+      <ShoppingCartSheet
+        open={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+      />
+
+      {/* Product Detail Modal */}
+      <ProductDetailModal
+        product={selectedProduct}
+        open={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
+
+      {/* Toast Notifications */}
+      <Toaster position="bottom-right" />
     </>
   );
 }
