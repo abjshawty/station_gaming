@@ -12,7 +12,7 @@ interface ProductScrollProps {
 
 export function ProductScroll ({ category, products, id, onProductClick }: ProductScrollProps) {
   const { addToCart } = useCart();
-  return (
+  return products.length > 0 ? (
     <section className="py-12 px-6" id={id}>
       <div className="container mx-auto">
         <div className="flex items-center justify-between mb-6">
@@ -89,5 +89,5 @@ export function ProductScroll ({ category, products, id, onProductClick }: Produ
         }
       `}</style>
     </section>
-  );
+  ) : null;
 }

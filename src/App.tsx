@@ -48,7 +48,11 @@ function AppContent () {
 
   const rioDeJaneiroGames = products.filter((product: Product) => product.category === "Rio_De_Janeiro");
   const euphoriaGames = products.filter((product: Product) => product.category === "Euphoria");
-  const allGames = [...rioDeJaneiroGames, ...euphoriaGames];
+  const jakartaGames = products.filter((product: Product) => product.category === "Jakarta");
+  const havanaGames = products.filter((product: Product) => product.category === "Havana");
+  const bogottaGames = products.filter((product: Product) => product.category === "Bogotta");
+  const dohaGames = products.filter((product: Product) => product.category === "Doha");
+  const allGames = [...rioDeJaneiroGames, ...euphoriaGames, ...jakartaGames, ...havanaGames, ...bogottaGames, ...dohaGames];
 
   // Filter products based on search and filters
   const filteredGames = useMemo(() => {
@@ -92,6 +96,10 @@ function AppContent () {
 
   const filteredRioDeJaneiro = filteredGames.filter((g) => g.category === 'Rio_De_Janeiro');
   const filteredEuphoria = filteredGames.filter((g) => g.category === 'Euphoria');
+  const filteredJakarta = filteredGames.filter((g) => g.category === 'Jakarta');
+  const filteredHavana = filteredGames.filter((g) => g.category === 'Havana');
+  const filteredBogotta = filteredGames.filter((g) => g.category === 'Bogotta');
+  const filteredDoha = filteredGames.filter((g) => g.category === 'Doha');
 
   const handleGenreToggle = (genre: string) => {
     setFilters((prev) => ({
@@ -192,6 +200,38 @@ function AppContent () {
                               onProductClick={setSelectedProduct}
                             />
                           )}
+                          {filteredJakarta.length > 0 && (
+                            <ProductScroll
+                              category="Jakarta"
+                              products={filteredJakarta}
+                              id="jakarta"
+                              onProductClick={setSelectedProduct}
+                            />
+                          )}
+                          {filteredHavana.length > 0 && (
+                            <ProductScroll
+                              category="Havana"
+                              products={filteredHavana}
+                              id="havana"
+                              onProductClick={setSelectedProduct}
+                            />
+                          )}
+                          {filteredBogotta.length > 0 && (
+                            <ProductScroll
+                              category="Bogotta"
+                              products={filteredBogotta}
+                              id="bogotta"
+                              onProductClick={setSelectedProduct}
+                            />
+                          )}
+                          {filteredDoha.length > 0 && (
+                            <ProductScroll
+                              category="Doha"
+                              products={filteredDoha}
+                              id="doha"
+                              onProductClick={setSelectedProduct}
+                            />
+                          )}
                         </>
                       )}
                     </div>
@@ -207,6 +247,30 @@ function AppContent () {
                         category="Euphoria"
                         products={euphoriaGames}
                         id="euphoria"
+                        onProductClick={setSelectedProduct}
+                      />
+                      <ProductScroll
+                        category="Jakarta"
+                        products={jakartaGames}
+                        id="jakarta"
+                        onProductClick={setSelectedProduct}
+                      />
+                      <ProductScroll
+                        category="Havana"
+                        products={havanaGames}
+                        id="havana"
+                        onProductClick={setSelectedProduct}
+                      />
+                      <ProductScroll
+                        category="Bogotta"
+                        products={bogottaGames}
+                        id="bogotta"
+                        onProductClick={setSelectedProduct}
+                      />
+                      <ProductScroll
+                        category="Doha"
+                        products={dohaGames}
+                        id="doha"
                         onProductClick={setSelectedProduct}
                       />
                     </>

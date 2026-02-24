@@ -44,7 +44,11 @@ export function ProductManagement({ onBack }: ProductManagementProps) {
 
   const categories = [
     { value: 'Rio_De_Janeiro', label: 'Rio De Janeiro' },
-    { value: 'Euphoria', label: 'Euphoria' }
+    { value: 'Euphoria', label: 'Euphoria' },
+    { value: 'Jakarta', label: 'Jakarta' },
+    { value: 'Bogotta', label: 'Bogotta' },
+    { value: 'Doha', label: 'Doha' },
+    { value: 'Havana', label: 'Havana' }
   ];
 
   const genres = [
